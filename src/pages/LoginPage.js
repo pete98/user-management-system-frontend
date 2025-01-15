@@ -31,8 +31,9 @@ const LoginPage = () => {
 
                 <Card className="max-w-full w-[340px] h-[450px]">
                     <CardHeader className={"items-center justify-center content-center text-2xl font-light"}>User Management System</CardHeader>
+                    <div className={"flex justify-center"}><p className={"font-serif text-sm"}>Developed By Pranavkumar Sailor</p></div>
                     <CardBody className="overflow-hidden">
-                        <Tabs
+                    <Tabs
                             fullWidth
                             aria-label="Tabs form"
                             selectedKey={selected}
@@ -66,7 +67,7 @@ const LoginPage = () => {
                                 </form>
                             </Tab>
                             <Tab key="sign-up" title="Sign up">
-                                <form className="flex flex-col gap-4 h-[300px]">
+                                <form className="flex flex-col gap-3 h-[400px]">
                                     <Input isRequired label="Name" placeholder="Enter your name" type="text" variant={"bordered"}/>
                                     <Input isRequired label="Email" placeholder="Enter your email" type="email" variant={"bordered"}/>
                                     <Input

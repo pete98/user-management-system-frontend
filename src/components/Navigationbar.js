@@ -8,6 +8,7 @@ import {
     Input,
     Button,
 } from "@nextui-org/react";
+import {User} from "@nextui-org/user";
 
 
 
@@ -54,7 +55,8 @@ const Navigationbar = () => {
                 </NavbarContent>
 
                 <NavbarContent as="div" className="items-center" justify="end">
-                    <Button color={"danger"}>Log Out</Button>
+                    <Button color={"danger"} variant={"ghost"}>Log Out</Button>
+
                 </NavbarContent>
             </Navbar>
             
