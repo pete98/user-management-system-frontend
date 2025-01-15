@@ -7,18 +7,19 @@ import CreateNewAdmin from "./pages/CreateNewAdmin";
 import UserProfilePage from "./pages/UserProfilePage";
 import LoginPage from "./pages/LoginPage";
 import SuperAdminDashboardPage from "./pages/SuperAdminDashboardPage";
+import ProtectedRoute from "./utils/ProtectedRoute";
 
 function App() {
   return (
       <Router>
           <Routes>
               {/*<Route path={"/LoginPage"} element={<LoginPage />} />*/}
-              <Route path={"/AdminDashboardPage"} element={<AdminDashboardPage />} />
-              <Route path={"/SuperAdminDashboardPage"} element={<SuperAdminDashboardPage />} />
-              <Route path={"/AddUser"} element={<AddUser />} />
-              <Route path={"/UpdateUser"} element={<UpdateUser />} />
-              <Route path={"/CreateNewAdmin"} element={<CreateNewAdmin />} />
-              <Route path={"/UserProfilePage"} element={<UserProfilePage />} />
+              <Route path={"/AdminDashboardPage"} element={<ProtectedRoute><AdminDashboardPage /></ProtectedRoute>} />
+              <Route path={"/SuperAdminDashboardPage"} element={<ProtectedRoute><SuperAdminDashboardPage /></ProtectedRoute>} />
+              <Route path={"/AddUser"} element={<ProtectedRoute><AddUser /></ProtectedRoute>} />
+              <Route path={"/UpdateUser"} element={<ProtectedRoute><UpdateUser /></ProtectedRoute>} />
+              <Route path={"/CreateNewAdmin"} element={<ProtectedRoute><CreateNewAdmin /></ProtectedRoute>} />
+              <Route path={"/UserProfilePage"} element={<ProtectedRoute><UserProfilePage /></ProtectedRoute>} />
               <Route path={"/*"} element={<LoginPage />} />
           </Routes>
       </Router>

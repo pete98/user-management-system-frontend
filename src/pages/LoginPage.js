@@ -1,5 +1,8 @@
 import React, {useEffect, useState} from "react";
 import {Tabs, Tab, Input, Link, Button, Card, CardBody, CardHeader} from "@nextui-org/react";
+import {useNavigate} from "react-router-dom";
+import apiClient from "../api/apiClient";
+import {FaRegEye, FaRegEyeSlash} from "react-icons/fa";
 
 
 
@@ -7,10 +10,15 @@ import {Tabs, Tab, Input, Link, Button, Card, CardBody, CardHeader} from "@nextu
 const LoginPage = () => {
 
     const [selected, setSelected] = React.useState("login");
-
     const [color, setColor] = useState("secondary");
-
     const [variant, setVariant] = React.useState("solid");
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+    const [signUpData, setSignUpData] = useState({name: "", email: "", password: ""});
+    const [successMessage, setSuccessMessage] = useState("");
+    const [error, setError] = useState("")
+    const navigate = useNavigate();
+
 
     useEffect(() => {
         if (selected === "login") {
@@ -24,6 +32,47 @@ const LoginPage = () => {
         }
 
     }, [selected])
+
+    const handleLogin = async () => {
+
+        // console.log(email, password);
+        //
+        // return
+
+        try {
+            const response = await apiClient.post("/auth/login", {email, password});
+            const token = response.data.token;
+
+            if (token) {
+                sessionStorage.setItem("token", token);
+                navigate("/SuperAdminDashboardPage");
+            }
+        } catch (error) {
+            console.log("Login Failed: ", error);
+            setError("Invalid email or password. Please try again later.");
+        }
+    }
+
+    const handleSignUp = async () => {
+        try {
+            const response = await apiClient.post("/auth/signup", signUpData);
+
+            if (response.status === 200) {
+                setSuccessMessage("Sign up successfully. Please log in.");
+                setSelected("/LoginPage");
+            }
+        } catch (error) {
+            console.log("Signup Failed: ", error);
+            setError("Sign up Failed. Please check your details again");
+
+        }
+    }
+
+    const [isVisible, setIsVisible] = React.useState(false);
+
+    const toggleVisibility = () => setIsVisible(!isVisible);
+
+
 
     return (
         <div className={"bg-blue-950"}>
@@ -40,18 +89,41 @@ const LoginPage = () => {
                             size="md"
                             onSelectionChange={setSelected}
                             color={color}
-
                             variant={variant}
                         >
                             <Tab key="login" title="Login">
                                 <form className="flex flex-col gap-4 justify-between">
-                                    <Input isRequired label="Email" placeholder="Enter your email" type="email"/>
+                                    <Input isRequired label="Email"
+                                           placeholder="Enter your email"
+                                           type="email"
+                                           value={email}
+                                           onChange={(e) => setEmail(e.target.value)}
+                                    />
                                     <Input
                                         isRequired
                                         label="Password"
                                         placeholder="Enter your password"
                                         type="password"
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                        type={isVisible ? "text" : "password"}
+                                        endContent={
+                                            <button
+                                                aria-label="toggle password visibility"
+                                                className="focus:outline-none"
+                                                type="button"
+                                                onClick={toggleVisibility}
+                                            >
+                                                {isVisible ? (
+                                                    <FaRegEye className="text-2xl text-default-400 pointer-events-none" />
+                                                ) : (
+                                                    <FaRegEyeSlash className="text-2xl text-default-400 pointer-events-none" />
+                                                )}
+                                            </button>
+                                        }
+
                                     />
+                                    {error && <p className="text-red-500 text-sm">{error}</p>}
                                     <p className="text-center text-small">
                                         Need to create an account?{" "}
                                         <Link size="sm" onPress={() => setSelected("sign-up")}
@@ -60,23 +132,53 @@ const LoginPage = () => {
                                         </Link>
                                     </p>
                                     <div className="flex gap-2 justify-end">
-                                        <Button fullWidth color="primary">
+                                        <Button fullWidth color="primary"  onPress={(e) => handleLogin(e)} >
                                             Login
                                         </Button>
+
                                     </div>
                                 </form>
                             </Tab>
                             <Tab key="sign-up" title="Sign up">
                                 <form className="flex flex-col gap-3 h-[400px]">
-                                    <Input isRequired label="Name" placeholder="Enter your name" type="text" variant={"bordered"}/>
-                                    <Input isRequired label="Email" placeholder="Enter your email" type="email" variant={"bordered"}/>
+                                    <Input isRequired label="Name"
+                                           placeholder="Enter your name"
+                                           type="text"
+                                           value={signUpData.name}
+                                           onChange={(e) => setSignUpData({...signUpData, name: e.target.value})}
+                                           variant={"bordered"}/>
+                                    <Input isRequired label="Email"
+                                           placeholder="Enter your email"
+                                           type="email"
+                                           value={signUpData.email}
+                                           onChange={(e) => setSignUpData({...signUpData, email: e.target.value})}
+                                           variant={"bordered"}/>
                                     <Input
                                         isRequired
                                         label="Password"
                                         placeholder="Enter your password"
-                                        type="password"
+                                        value={signUpData.password}
+                                        onChange={(e) => setSignUpData({...signUpData, password: e.target.value})}
                                         variant={"bordered"}
-                                    />
+                                        type={isVisible ? "text" : "password"}
+                                        endContent={
+                                            <button
+                                                aria-label="toggle password visibility"
+                                                className="focus:outline-none"
+                                                type="button"
+                                                onClick={toggleVisibility}
+                                            >
+                                                {isVisible ? (
+                                                    <FaRegEye className="text-2xl text-default-400 pointer-events-none" />
+                                                ) : (
+                                                    <FaRegEyeSlash className="text-2xl text-default-400 pointer-events-none" />
+                                                )}
+                                            </button>
+                                        }
+                                        />
+                                    {error && <p className="text-red-500 text-sm">{error}</p>}
+                                    {successMessage && <p className="text-green-500 text-sm">{successMessage}</p>}
+
                                     <p className="text-center text-small">
                                         Already have an account?{" "}
                                         <Link size="sm" onPress={() => setSelected("login")}
@@ -85,13 +187,13 @@ const LoginPage = () => {
                                         </Link>
                                     </p>
                                     <div className="flex gap-2 justify-end">
-                                        <Button fullWidth color="primary">
+                                        <Button fullWidth color="primary" onPress={(e) => handleSignUp(e)}>
                                             Sign up
                                         </Button>
                                     </div>
                                 </form>
                             </Tab>
-                        </Tabs>
+                    </Tabs>
                     </CardBody>
                 </Card>
             </div>

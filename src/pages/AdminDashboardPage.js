@@ -10,6 +10,8 @@ import {
     Pagination,
     getKeyValue, Button, Input,
 } from "@nextui-org/react";
+
+import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure} from "@nextui-org/modal";
 import {Card, CardBody} from "@nextui-org/react";
 import {TbEdit, TbTrash} from "react-icons/tb";
 
@@ -181,34 +183,38 @@ const AdminDashboardPage = () => {
         return users.slice(start, end);
     }, [page, users]);
 
-
+    const {isOpen, onOpen, onOpenChange} = useDisclosure();
 
     return (
 
         <div className={"flex-col"}>
-            <Navigationbar />
-
+            <Navigationbar/>
             <Card className={"max-w-screen-lg mx-auto mt-2.5 flex-col"}>
 
                 <CardBody>
-                    <div className={"flex items-center"}>
-                    <p className={"font-serif"}>Admin Dashboard</p>
-                    <div className={"flex space-x-2 w-full justify-end"}>
-                        <Input
-                            classNames={{
-                                base: "sm:max-w-[44rem] h-10",
-                                mainWrapper: "h-full",
-                                input: "text-small",
-                                inputWrapper:
-                                    "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20",
-                            }}
-                            placeholder="Search by name..."
-                            size="sm"
-                            startContent={<SearchIcon size={18}/>}
-                            type="search"
-                        />
-                        <Button color={"primary"}>Add User</Button>
-                    </div>
+                    <div className={"flex"}>
+
+                        <div className={"flex w-[300px] justify-center items-center"}>
+                            <p className={"font-serif content w-fit"}>Admin Dashboard</p>
+                        </div>
+
+
+                        <div className={"flex space-x-2 w-full justify-end"}>
+                            <Input
+                                classNames={{
+                                    base: "sm:max-w-[44rem] h-10",
+                                    mainWrapper: "h-full",
+                                    input: "text-small",
+                                    inputWrapper:
+                                        "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20",
+                                }}
+                                placeholder="Search by name..."
+                                size="sm"
+                                startContent={<SearchIcon size={18}/>}
+                                type="search"
+                            />
+                            <Button color={"primary"}>Add User</Button>
+                        </div>
                     </div>
 
                     <Table
@@ -223,8 +229,8 @@ const AdminDashboardPage = () => {
                                     color="secondary"
                                     page={page}
                                     total={pages}
-                                    onChange={(page) => setPage(page)}
-                                />
+                                    onChange={(page) => setPage(page)}/>
+
                             </div>
                         }
                         className={"max-w-screen-lg mx-auto mt-2.5"}>
@@ -233,7 +239,11 @@ const AdminDashboardPage = () => {
                             <TableColumn key="name">NAME</TableColumn>
                             <TableColumn key="role">ROLE</TableColumn>
                             <TableColumn key="email">EMAIL</TableColumn>
-                            <TableColumn key="action">ACTION</TableColumn>
+                            <TableColumn key="action">
+                                <div className={"flex items-center justify-center"}>
+                                    ACTION
+                                </div>
+                            </TableColumn>
                         </TableHeader>
                         <TableBody items={items}>
                             {(item) => (
@@ -241,9 +251,48 @@ const AdminDashboardPage = () => {
                                     {(columnKey) =>
                                         columnKey === "action" ? (
                                             <TableCell>
-                                                <div className={"items-center space-x-2"}>
-                                                    <Button color={"secondary"} isIconOnly={true}><TbEdit/></Button>
-                                                    <Button color={"danger"} isIconOnly={true}><TbTrash/></Button>
+                                                <div className={"flex items-center justify-center gap-2"}>
+                                                    {/* Edit User */}
+                                                    <Button color={"secondary"} isIconOnly={true} variant={"ghost"} ><TbEdit/></Button>
+
+                                                    {/* Delete User */}
+                                                    <Button onPress={onOpen} color={"danger"} isIconOnly={true} variant={"ghost"} ><TbTrash/></Button>
+                                                    <Modal isOpen={isOpen} onOpenChange={onOpenChange} isDismissable={false}>
+                                                        <ModalContent>
+                                                            {(onClose) => (
+                                                                <>
+                                                                    <ModalHeader className="flex flex-col gap-1">Modal Title</ModalHeader>
+                                                                    <ModalBody>
+                                                                        <p>
+                                                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam pulvinar risus non
+                                                                            risus hendrerit venenatis. Pellentesque sit amet hendrerit risus, sed porttitor
+                                                                            quam.
+                                                                        </p>
+                                                                        <p>
+                                                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam pulvinar risus non
+                                                                            risus hendrerit venenatis. Pellentesque sit amet hendrerit risus, sed porttitor
+                                                                            quam.
+                                                                        </p>
+                                                                        <p>
+                                                                            Magna exercitation reprehenderit magna aute tempor cupidatat consequat elit dolor
+                                                                            adipisicing. Mollit dolor eiusmod sunt ex incididunt cillum quis. Velit duis sit
+                                                                            officia eiusmod Lorem aliqua enim laboris do dolor eiusmod. Et mollit incididunt
+                                                                            nisi consectetur esse laborum eiusmod pariatur proident Lorem eiusmod et. Culpa
+                                                                            deserunt nostrud ad veniam.
+                                                                        </p>
+                                                                    </ModalBody>
+                                                                    <ModalFooter>
+                                                                        <Button color="danger" variant="light" onPress={onClose}>
+                                                                            Close
+                                                                        </Button>
+                                                                        <Button color="primary" onPress={onClose}>
+                                                                            Action
+                                                                        </Button>
+                                                                    </ModalFooter>
+                                                                </>
+                                                            )}
+                                                        </ModalContent>
+                                                    </Modal>
                                                 </div>
                                             </TableCell>
 
@@ -257,8 +306,6 @@ const AdminDashboardPage = () => {
                     </Table>
                 </CardBody>
             </Card>
-
-
 
 
         </div>

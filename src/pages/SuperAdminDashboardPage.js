@@ -14,6 +14,7 @@ import {
 import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure} from "@nextui-org/modal";
 import {Card, CardBody} from "@nextui-org/react";
 import {TbEdit, TbTrash} from "react-icons/tb";
+import {useNavigate} from "react-router-dom";
 
 
 
@@ -214,7 +215,7 @@ const SuperAdminDashboardPage = () => {
                                 startContent={<SearchIcon size={18}/>}
                                 type="search"
                             />
-                            <Button color={"primary"} variant={"solid"}>Create Admin</Button>
+                            <Button color={"primary"} variant={"solid"} >Create Admin</Button>
                             <Button color={"primary"} variant={"solid"}>Add User</Button>
                         </div>
                     </div>
