@@ -5,9 +5,11 @@ import {
     CardBody, CardFooter, CardHeader, Divider, getKeyValue,
     Input
 } from "@nextui-org/react";
+import {useNavigate} from "react-router-dom";
 
 
 const AddUser = () => {
+    const navigate = useNavigate();
     return (
         <div>
             <Navigationbar/>
@@ -44,7 +46,7 @@ const AddUser = () => {
                 </CardBody>
                 <CardFooter className={"mb-5 justify-center space-x-3"}>
                     <div className={"mt-2.5"}>
-                        <Button color={"default"} variant={"bordered"}>Back</Button>
+                        <Button color={"default"} variant={"bordered"} onPress={() => navigate("/SuperAdminDashboardPage")}>Back</Button>
                     </div>
                     <div className={"mt-2.5"}>
                         <Button color={"primary"}>Save</Button>

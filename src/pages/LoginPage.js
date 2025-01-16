@@ -3,6 +3,7 @@ import {Tabs, Tab, Input, Link, Button, Card, CardBody, CardHeader} from "@nextu
 import {useNavigate} from "react-router-dom";
 import apiClient from "../api/apiClient";
 import {FaRegEye, FaRegEyeSlash} from "react-icons/fa";
+import {jwtDecode} from "jwt-decode";
 
 
 
@@ -34,24 +35,35 @@ const LoginPage = () => {
     }, [selected])
 
     const handleLogin = async () => {
-
-        // console.log(email, password);
-        //
-        // return
-
         try {
-            const response = await apiClient.post("/auth/login", {email, password});
+            const response = await apiClient.post("/auth/login", { email, password });
             const token = response.data.token;
 
             if (token) {
-                sessionStorage.setItem("token", token);
-                navigate("/SuperAdminDashboardPage");
+                sessionStorage.setItem("token", token); // Save the token
+
+                // Decode the JWT token
+                const decodedToken = jwtDecode(token);
+                const role = decodedToken.role; // Extract role from the token
+                console.log("User role:", role);
+
+                // Navigate based on role
+                if (role === "ROLE_SUPER_ADMIN") {
+                    navigate("/SuperAdminDashboardPage");
+                } else if (role === "ROLE_ADMIN") {
+                    navigate("/AdminDashboardPage");
+                } else if (role === "ROLE_USER") {
+                    navigate("/UserProfilePage");
+                } else {
+                    console.log("Unknown role, redirecting to default page");
+                    navigate("/LoginPage");
+                }
             }
         } catch (error) {
             console.log("Login Failed: ", error);
             setError("Invalid email or password. Please try again later.");
         }
-    }
+    };
 
     const handleSignUp = async () => {
         try {

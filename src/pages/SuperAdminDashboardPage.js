@@ -11,11 +11,9 @@ import {
     getKeyValue, Button, Input,
 } from "@nextui-org/react";
 
-import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure} from "@nextui-org/modal";
 import {Card, CardBody} from "@nextui-org/react";
 import {TbEdit, TbTrash} from "react-icons/tb";
 import {useNavigate} from "react-router-dom";
-
 
 
 export const users = [
@@ -185,6 +183,8 @@ const SuperAdminDashboardPage = () => {
         return users.slice(start, end);
     }, [page, users]);
 
+    const navigate = useNavigate();
+
 
 
     return (
@@ -215,8 +215,9 @@ const SuperAdminDashboardPage = () => {
                                 startContent={<SearchIcon size={18}/>}
                                 type="search"
                             />
-                            <Button color={"primary"} variant={"solid"} >Create Admin</Button>
-                            <Button color={"primary"} variant={"solid"}>Add User</Button>
+
+                            <Button color={"primary"} variant={"solid"} onPress={() => navigate("/CreateNewAdmin")}>Create Admin</Button>
+                            <Button color={"primary"} variant={"solid"} onPress={() => navigate("/AddUser")}>Add User</Button>
                         </div>
                     </div>
 

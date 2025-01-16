@@ -8,7 +8,7 @@ import {
     Input,
     Button,
 } from "@nextui-org/react";
-import {User} from "@nextui-org/user";
+import {useNavigate} from "react-router-dom";
 
 
 
@@ -45,6 +45,11 @@ export const SearchIcon = ({size = 24, strokeWidth = 1.5, width, height, ...prop
 };
 
 const Navigationbar = () => {
+    const navigate = useNavigate();
+    const handleLogout = () => {
+        sessionStorage.clear()
+        navigate("/LoginPage");
+    }
     return (
         <div>
             <Navbar isBordered>
@@ -55,7 +60,7 @@ const Navigationbar = () => {
                 </NavbarContent>
 
                 <NavbarContent as="div" className="items-center" justify="end">
-                    <Button color={"danger"} variant={"ghost"}>Log Out</Button>
+                    <Button color={"danger"} variant={"ghost"} onPress={handleLogout}>Log Out</Button>
 
                 </NavbarContent>
             </Navbar>
