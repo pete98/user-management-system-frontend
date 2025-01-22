@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import Navigationbar, {SearchIcon} from "../components/Navigationbar";
 import {
     Table,
@@ -9,168 +9,56 @@ import {
     TableCell,
     Pagination,
     getKeyValue, Button, Input,
-} from "@nextui-org/react";
+} from "@heroui/react";
 
-import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure} from "@nextui-org/modal";
-import {Card, CardBody} from "@nextui-org/react";
+import {Card, CardBody} from "@heroui/react";
 import {TbEdit, TbTrash} from "react-icons/tb";
-
-
-export const users = [
-    {
-        key: "1",
-        name: "Tony Reichert",
-        role: "CEO",
-        email: "Active",
-    },
-    {
-        key: "2",
-        name: "Zoey Lang",
-        role: "Technical Lead",
-        email: "Paused",
-    },
-    {
-        key: "3",
-        name: "Jane Fisher",
-        role: "Senior Developer",
-        email: "Active",
-    },
-    {
-        key: "4",
-        name: "William Howard",
-        role: "Community Manager",
-        email: "Vacation",
-    },
-    {
-        key: "5",
-        name: "Emily Collins",
-        role: "Marketing Manager",
-        email: "Active",
-    },
-    {
-        key: "6",
-        name: "Brian Kim",
-        role: "Product Manager",
-        email: "Active",
-    },
-    {
-        key: "7",
-        name: "Laura Thompson",
-        role: "UX Designer",
-        email: "Active",
-    },
-    {
-        key: "8",
-        name: "Michael Stevens",
-        role: "Data Analyst",
-        email: "Paused",
-    },
-    {
-        key: "9",
-        name: "Sophia Nguyen",
-        role: "Quality Assurance",
-        email: "Active",
-    },
-    {
-        key: "10",
-        name: "James Wilson",
-        role: "Front-end Developer",
-        email: "Vacation",
-    },
-    {
-        key: "11",
-        name: "Ava Johnson",
-        role: "Back-end Developer",
-        email: "Active",
-    },
-    {
-        key: "12",
-        name: "Isabella Smith",
-        role: "Graphic Designer",
-        email: "Active",
-    },
-    {
-        key: "13",
-        name: "Oliver Brown",
-        role: "Content Writer",
-        email: "Paused",
-    },
-    {
-        key: "14",
-        name: "Lucas Jones",
-        role: "Project Manager",
-        email: "Active",
-    },
-    {
-        key: "15",
-        name: "Grace Davis",
-        role: "HR Manager",
-        email: "Active",
-    },
-    {
-        key: "16",
-        name: "Elijah Garcia",
-        role: "Network Administrator",
-        email: "Active",
-    },
-    {
-        key: "17",
-        name: "Emma Martinez",
-        role: "Accountant",
-        email: "Vacation",
-    },
-    {
-        key: "18",
-        name: "Benjamin Lee",
-        role: "Operations Manager",
-        email: "Active",
-    },
-    {
-        key: "19",
-        name: "Mia Hernandez",
-        role: "Sales Manager",
-        email: "Paused",
-    },
-    {
-        key: "20",
-        name: "Daniel Lewis",
-        role: "DevOps Engineer",
-        email: "Active",
-    },
-    {
-        key: "21",
-        name: "Amelia Clark",
-        role: "Social Media Specialist",
-        email: "Active",
-    },
-    {
-        key: "22",
-        name: "Jackson Walker",
-        role: "Customer Support",
-        email: "Active",
-    },
-    {
-        key: "23",
-        name: "Henry Hall",
-        role: "Security Analyst",
-        email: "Active",
-    },
-    {
-        key: "24",
-        name: "Charlotte Young",
-        role: "PR Specialist",
-        email: "Paused",
-    },
-    {
-        key: "25",
-        name: "Liam King",
-        role: "Mobile App Developer",
-        email: "Active",
-    },
-];
+import apiClient from "../api/apiClient";
+import {useNavigate} from "react-router-dom";
 
 
 const AdminDashboardPage = () => {
+
+    const navigate = useNavigate();
+
+    const token = sessionStorage.getItem("token");
+
+    const [users, setUsers] = useState([]);
+
+    const fetchUsers = async () => {
+        try {
+            const response = await apiClient.get("/users/role/USER", {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            setUsers(response.data);
+        } catch (error) {
+            console.log("Error fetching users", error);
+        }
+    }
+
+    //Request to fetch users to display in table
+    useEffect(() => {
+        fetchUsers();
+    }, []);
+
+    //Delete user
+    const deleteUser = async (id) => {
+        try {
+            const response = await apiClient.delete(`/users/${id}`);
+            console.log('User deleted successfully:', response.data);
+
+            //Remove the delete user from the state
+            setUsers((prevUsers) => prevUsers.filter((user) => user.id !== id));
+        } catch (error) {
+            console.log('Error deleting user:', error.response?.data || error.message);
+        }
+    }
+
+    const handleUpdate = (id) => {
+        navigate(`/UpdateUser/${id}`);
+    }
+
+
     const [page, setPage] = React.useState(1);
     const rowsPerPage = 10;
 
@@ -183,7 +71,6 @@ const AdminDashboardPage = () => {
         return users.slice(start, end);
     }, [page, users]);
 
-    const {isOpen, onOpen, onOpenChange} = useDisclosure();
 
     return (
 
@@ -192,28 +79,16 @@ const AdminDashboardPage = () => {
             <Card className={"max-w-screen-lg mx-auto mt-2.5 flex-col"}>
 
                 <CardBody>
-                    <div className={"flex"}>
+                    <div className={"flex justify-between"}>
 
-                        <div className={"flex w-[300px] justify-center items-center"}>
+                        <div className={"flex w-[300px]  items-center px-4"}>
                             <p className={"font-serif content w-fit"}>Admin Dashboard</p>
                         </div>
 
 
-                        <div className={"flex space-x-2 w-full justify-end"}>
-                            <Input
-                                classNames={{
-                                    base: "sm:max-w-[44rem] h-10",
-                                    mainWrapper: "h-full",
-                                    input: "text-small",
-                                    inputWrapper:
-                                        "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20",
-                                }}
-                                placeholder="Search by name..."
-                                size="sm"
-                                startContent={<SearchIcon size={18}/>}
-                                type="search"
-                            />
-                            <Button color={"primary"}>Add User</Button>
+                        <div className={"flex items-center"}>
+
+                            <Button color={"primary"} onPress={() => navigate("/AddUser")}>Add User</Button>
                         </div>
                     </div>
 
@@ -236,8 +111,9 @@ const AdminDashboardPage = () => {
                         className={"max-w-screen-lg mx-auto mt-2.5"}>
                         >
                         <TableHeader>
-                            <TableColumn key="name">NAME</TableColumn>
-                            <TableColumn key="role">ROLE</TableColumn>
+                            <TableColumn key="id">ID</TableColumn>
+                            <TableColumn key="fullName">NAME</TableColumn>
+                            <TableColumn key="position">POSITION</TableColumn>
                             <TableColumn key="email">EMAIL</TableColumn>
                             <TableColumn key="action">
                                 <div className={"flex items-center justify-center"}>
@@ -245,54 +121,20 @@ const AdminDashboardPage = () => {
                                 </div>
                             </TableColumn>
                         </TableHeader>
-                        <TableBody items={items}>
+                        <TableBody items={users}>
                             {(item) => (
-                                <TableRow key={item.name}>
+                                <TableRow key={item.id}>
                                     {(columnKey) =>
                                         columnKey === "action" ? (
                                             <TableCell>
                                                 <div className={"flex items-center justify-center gap-2"}>
                                                     {/* Edit User */}
-                                                    <Button color={"secondary"} isIconOnly={true} variant={"ghost"} ><TbEdit/></Button>
+                                                    <Button color={"secondary"} isIconOnly={true} variant={"ghost"}
+                                                            onPress={() => handleUpdate(item.id)}><TbEdit/></Button>
 
                                                     {/* Delete User */}
-                                                    <Button onPress={onOpen} color={"danger"} isIconOnly={true} variant={"ghost"} ><TbTrash/></Button>
-                                                    <Modal isOpen={isOpen} onOpenChange={onOpenChange} isDismissable={false}>
-                                                        <ModalContent>
-                                                            {(onClose) => (
-                                                                <>
-                                                                    <ModalHeader className="flex flex-col gap-1">Modal Title</ModalHeader>
-                                                                    <ModalBody>
-                                                                        <p>
-                                                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam pulvinar risus non
-                                                                            risus hendrerit venenatis. Pellentesque sit amet hendrerit risus, sed porttitor
-                                                                            quam.
-                                                                        </p>
-                                                                        <p>
-                                                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam pulvinar risus non
-                                                                            risus hendrerit venenatis. Pellentesque sit amet hendrerit risus, sed porttitor
-                                                                            quam.
-                                                                        </p>
-                                                                        <p>
-                                                                            Magna exercitation reprehenderit magna aute tempor cupidatat consequat elit dolor
-                                                                            adipisicing. Mollit dolor eiusmod sunt ex incididunt cillum quis. Velit duis sit
-                                                                            officia eiusmod Lorem aliqua enim laboris do dolor eiusmod. Et mollit incididunt
-                                                                            nisi consectetur esse laborum eiusmod pariatur proident Lorem eiusmod et. Culpa
-                                                                            deserunt nostrud ad veniam.
-                                                                        </p>
-                                                                    </ModalBody>
-                                                                    <ModalFooter>
-                                                                        <Button color="danger" variant="light" onPress={onClose}>
-                                                                            Close
-                                                                        </Button>
-                                                                        <Button color="primary" onPress={onClose}>
-                                                                            Action
-                                                                        </Button>
-                                                                    </ModalFooter>
-                                                                </>
-                                                            )}
-                                                        </ModalContent>
-                                                    </Modal>
+                                                    <Button color={"danger"} isIconOnly={true} variant={"ghost"}
+                                                            onPress={() => deleteUser(item.id)}><TbTrash/></Button>
                                                 </div>
                                             </TableCell>
 

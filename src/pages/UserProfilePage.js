@@ -1,12 +1,36 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import Navigationbar from "../components/Navigationbar";
 import {
     Card,
-    CardBody, CardHeader, Divider,
-} from "@nextui-org/react";
+    CardBody, CardHeader, Divider, Textarea,
+} from "@heroui/react";
+import apiClient from "../api/apiClient";
 
 
 const UserProfilePage = () => {
+
+    const [userData, setUserData] = useState({
+        email: "",
+        fullName: "",
+        position: "",
+    });
+
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                const response = await apiClient.get("/users/me");
+                setUserData(response.data);
+            } catch (error) {
+                console.log("Error fetching user data", error);
+            }
+        }
+
+        fetchUserData();
+    }, [userData])
+
+
+
+
     return (
         <div>
             <Navigationbar/>
@@ -16,14 +40,14 @@ const UserProfilePage = () => {
                 </CardHeader>
                 <Divider/>
                 <CardBody className={"flex flex-col space-y-5"}>
-                    <div>
-                        <p className={"text-large font-serif"}>Name : </p>
+                    <div className={"flex"}>
+                        <p className={"text-large font-serif"}>Name: {userData.fullName}</p>
                     </div>
                     <div>
-                        <p className={"text-large font-serif"}>Position : </p>
+                        <p className={"text-large font-serif"}>Position : {userData.position} </p>
                     </div>
                     <div>
-                        <p className={"text-large font-serif"}>Email : </p>
+                        <p className={"text-large font-serif"}>Email : {userData.email}</p>
                     </div>
                 </CardBody>
             </Card>

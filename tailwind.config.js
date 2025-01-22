@@ -1,12 +1,11 @@
 /** @type {import('tailwindcss').Config} */
-const {nextui} = require("@nextui-org/react");
-module.exports = {
+const {heroui} = require("@heroui/react");module.exports = {
   content: [
     "./src/**/*.{js,jsx,ts,tsx}", // Include all React components
-    "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
+    "./node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     extend: {},
   },
-  plugins: [nextui()],
+  plugins: [heroui()],
 };

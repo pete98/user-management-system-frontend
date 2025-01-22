@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Tabs, Tab, Input, Link, Button, Card, CardBody, CardHeader} from "@nextui-org/react";
+import {Tabs, Tab, Input, Link, Button, Card, CardBody, CardHeader} from "@heroui/react";
 import {useNavigate} from "react-router-dom";
 import apiClient from "../api/apiClient";
 import {FaRegEye, FaRegEyeSlash} from "react-icons/fa";
@@ -15,7 +15,7 @@ const LoginPage = () => {
     const [variant, setVariant] = React.useState("solid");
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
-    const [signUpData, setSignUpData] = useState({name: "", email: "", password: ""});
+    const [signUpData, setSignUpData] = useState({fullName: "", email: "", password: ""});
     const [successMessage, setSuccessMessage] = useState("");
     const [error, setError] = useState("")
     const navigate = useNavigate();
@@ -45,7 +45,7 @@ const LoginPage = () => {
                 // Decode the JWT token
                 const decodedToken = jwtDecode(token);
                 const role = decodedToken.role; // Extract role from the token
-                console.log("User role:", role);
+                sessionStorage.setItem("role", role);
 
                 // Navigate based on role
                 if (role === "ROLE_SUPER_ADMIN") {
@@ -156,8 +156,8 @@ const LoginPage = () => {
                                     <Input isRequired label="Name"
                                            placeholder="Enter your name"
                                            type="text"
-                                           value={signUpData.name}
-                                           onChange={(e) => setSignUpData({...signUpData, name: e.target.value})}
+                                           value={signUpData.fullName}
+                                           onChange={(e) => setSignUpData({...signUpData, fullName: e.target.value})}
                                            variant={"bordered"}/>
                                     <Input isRequired label="Email"
                                            placeholder="Enter your email"

@@ -1,14 +1,50 @@
-import React from 'react';
-import Navigationbar, {SearchIcon} from "../components/Navigationbar";
+import React, {useState} from 'react';
+import Navigationbar from "../components/Navigationbar";
 import {
     Button, Card,
     CardBody, CardFooter, CardHeader, Divider,
     Input
-} from "@nextui-org/react";
+} from "@heroui/react";
 import {useNavigate} from "react-router-dom";
+import apiClient from "../api/apiClient";
+
 
 
 const CreateNewAdmin = () => {
+
+    const [userData, setUserData] = useState({
+        fullName: "",
+        email: "",
+        password: "",
+        position: ""
+    })
+
+    const handleSave = async () => {
+        try {
+            const response = await apiClient.post("/admins/createAdmin", userData);
+            handleBack()
+        } catch (error) {
+            console.log("Error saving user", error);
+        }
+    }
+
+
+
+   const handleBack = () => {
+        const role = sessionStorage.getItem("role");
+        if (role === "ROLE_ADMIN") {
+            navigate("/AdminDashboardPage");
+        } else if (role === "ROLE_SUPER_ADMIN") {
+            navigate("/SuperAdminDashboardPage");
+        } else {
+            navigate("/PageNotFound")
+        }
+   }
+
+
+
+
+
     const navigate = useNavigate();
     return (
         <div>
@@ -27,18 +63,18 @@ const CreateNewAdmin = () => {
 
                     <div className={"flex flex-col"}>
                         <div className={"flex mt-2.5"}>
-                            <Input label="Email" type="email"/>
+                            <Input label="Email" type="email" value={userData.email} onChange={(e) => setUserData({...userData, email: e.target.value})}/>
                         </div>
                         <div className={"flex mt-2.5"}>
-                            <Input label="Name" type="text"/>
+                            <Input label="Name" type="text" value={userData.fullName} onChange={(e) => setUserData({...userData, fullName: e.target.value})}/>
                         </div>
                     </div>
                     <div className={"flex flex-col"}>
                         <div className={"mt-2.5"}>
-                            <Input label="Position" type="text"/>
+                            <Input label="Position" type="text" value={userData.position} onChange={(e) => setUserData({...userData, position: e.target.value})}/>
                         </div>
                         <div className={"mt-2.5 "}>
-                            <Input label="New Password" type="password"/>
+                            <Input label="New Password" type="text" value={userData.password} onChange={(e) => setUserData({...userData, password: e.target.value})}/>
                         </div>
 
                     </div>
@@ -49,7 +85,7 @@ const CreateNewAdmin = () => {
                         <Button color={"default"} variant={"bordered"} onPress={() => navigate("/SuperAdminDashboardPage")}>Back</Button>
                     </div>
                     <div className={"mt-2.5"}>
-                        <Button color={"primary"}>Save</Button>
+                        <Button color={"primary"} onPress={() => handleSave()}>Save</Button>
                     </div>
 
                 </CardFooter>
