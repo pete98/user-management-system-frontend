@@ -4,6 +4,7 @@ import {useNavigate} from "react-router-dom";
 import apiClient from "../api/apiClient";
 import {FaRegEye, FaRegEyeSlash} from "react-icons/fa";
 import {jwtDecode} from "jwt-decode";
+import {Alert} from "@heroui/react";
 
 
 
@@ -19,6 +20,9 @@ const LoginPage = () => {
     const [successMessage, setSuccessMessage] = useState("");
     const [error, setError] = useState("")
     const navigate = useNavigate();
+    const title = "Sign Up Successful";
+    const description = "Please log in to your account!";
+
 
 
     useEffect(() => {
@@ -70,8 +74,8 @@ const LoginPage = () => {
             const response = await apiClient.post("/auth/signup", signUpData);
 
             if (response.status === 200) {
-                setSuccessMessage("Sign up successfully. Please log in.");
                 setSelected("/LoginPage");
+                window.alert("Sign up Successful!, Please log in to your account!");
             }
         } catch (error) {
             console.log("Signup Failed: ", error);
