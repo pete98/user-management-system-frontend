@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import Navigationbar, {SearchIcon} from "../components/Navigationbar";
+import Navigationbar from "../components/Navigationbar";
 import {
     Table,
     TableHeader,
@@ -8,7 +8,7 @@ import {
     TableRow,
     TableCell,
     Pagination,
-    getKeyValue, Button, Input,
+    getKeyValue, Button
 } from "@heroui/react";
 
 import {Card, CardBody} from "@heroui/react";

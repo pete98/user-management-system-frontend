@@ -4,7 +4,6 @@ import {useNavigate} from "react-router-dom";
 import apiClient from "../api/apiClient";
 import {FaRegEye, FaRegEyeSlash} from "react-icons/fa";
 import {jwtDecode} from "jwt-decode";
-import {Alert} from "@heroui/react";
 
 
 
@@ -17,11 +16,9 @@ const LoginPage = () => {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [signUpData, setSignUpData] = useState({fullName: "", email: "", password: ""});
-    const [successMessage, setSuccessMessage] = useState("");
     const [error, setError] = useState("")
     const navigate = useNavigate();
-    const title = "Sign Up Successful";
-    const description = "Please log in to your account!";
+
 
 
 

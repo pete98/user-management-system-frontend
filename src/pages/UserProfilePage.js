@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import Navigationbar from "../components/Navigationbar";
 import {
     Card,
-    CardBody, CardHeader, Divider, Textarea,
+    CardBody, CardHeader, Divider
 } from "@heroui/react";
 import apiClient from "../api/apiClient";
 
