@@ -190,7 +190,6 @@ const LoginPage = () => {
                                         }
                                         />
                                     {error && <p className="text-red-500 text-sm">{error}</p>}
-                                    {successMessage && <p className="text-green-500 text-sm">{successMessage}</p>}
 
                                     <p className="text-center text-small">
                                         Already have an account?{" "}
