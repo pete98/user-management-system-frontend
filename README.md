@@ -1,70 +1,50 @@
-# Getting Started with Create React App
+# User Management System Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is the frontend repository for the **User Management System** application. The frontend is built using **React** and provides an intuitive user interface for managing users, roles, and related features. It connects to the backend API to handle data and operations seamlessly.
 
-## Available Scripts
+## Website URL
 
-In the project directory, you can run:
+[um.pranavsailor.com](http://um.pranavsailor.com)
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Features
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- User authentication and session management.
+- Role-based access control (RBAC).
+- CRUD operations for users and roles.
+- Responsive design for better usability on different devices.
+- Integration with RESTful APIs for backend communication.
 
-### `npm test`
+## Technologies Used
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Frontend:
+- **React**: JavaScript library for building user interfaces.
+- **React Router**: For routing and navigation.
+- **Axios**: For making API requests.
+- **Tailwind CSS**: For styling the application.
 
-### `npm run build`
+### Backend:
+- **Spring Boot**: Backend framework for building REST APIs efficiently.
+- **Spring Security**: For implementing authentication and authorization (including JWT-based token management).
+- **Spring Data JPA**: For database interactions using ORM (Object-Relational Mapping).
+- **AWS RDS MySQL**: Relational database for storing user and role data.
+- **JWT (JSON Web Tokens)**: For secure communication between frontend and backend.
+-  **AWS EC2**: Used for deploying the backend server
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## How It Works
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+The frontend application allows administrators to manage the user base of the system. Key operations include:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+1. **User Management**: Adding, editing, deleting, and viewing users.
+2. **Role Management**: Assigning and updating roles for users.
+3. **Authentication**: Secure login and logout functionality.
+4. **Dashboard**: Displays an overview of user-related statistics and actions.
 
-### `npm run eject`
+The backend, built with **Spring Boot**, handles the business logic, data storage, and secure API communication. The system follows a layered architecture, ensuring modularity and scalability. 
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+For more details on how to set up and run the application, visit the [repository link](https://github.com/pete98/user-management-system-frontend.git).
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+---
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Feel free to clone the repository and explore the code!
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
