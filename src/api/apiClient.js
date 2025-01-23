@@ -3,7 +3,7 @@ import axios from 'axios';
 
 
 const apiClient = axios.create({
-    baseURL: 'https://ec2-54-158-228-70.compute-1.amazonaws.com:8080', // Replace with your backend API URL
+    baseURL: 'http://localhost:8080', // Replace with your backend API URL
 });
 
 
