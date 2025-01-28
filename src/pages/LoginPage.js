@@ -107,7 +107,7 @@ const LoginPage = () => {
                             <Tab key="login" title="Login">
                                 <form className="flex flex-col gap-4 justify-between">
                                     <Input isRequired label="Email"
-                                           placeholder="Enter your email"
+                                           placeholder="'super.admin@email.com' or signup"
                                            type="email"
                                            value={email}
                                            onChange={(e) => setEmail(e.target.value)}
@@ -115,7 +115,7 @@ const LoginPage = () => {
                                     <Input
                                         isRequired
                                         label="Password"
-                                        placeholder="Enter your password"
+                                        placeholder="Enter : '123456' for super admin "
                                         type="password"
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)}
